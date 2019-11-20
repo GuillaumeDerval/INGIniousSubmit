@@ -1,5 +1,5 @@
 <idea-plugin>
-    <id>be.ac.ucl.info.inginious_submit</id>
+    <id>be.ac.ucl.info.inginous_submit</id>
     <name>Submit to INGInious</name>
     <vendor email="guillaume.derval@uclouvain.be" url="http://www.inginious.org">Guillaume Derval</vendor>
 
@@ -24,7 +24,7 @@
                         name="INGIniousSubmitLangExtractor"/>
     </extensionPoints>
 
-    <extensions defaultExtensionNs="be.ac.ucl.info.inginious_submit">
+    <extensions defaultExtensionNs="be.ac.ucl.info.inginous_submit">
         <INGIniousSubmitLangExtractor implementation="be.ac.ucl.info.inginious_submit.extractors.FileExtractor"/>
     </extensions>
 

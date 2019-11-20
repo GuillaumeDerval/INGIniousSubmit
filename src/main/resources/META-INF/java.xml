@@ -1,5 +1,5 @@
 <idea-plugin>
-    <extensions defaultExtensionNs="be.ac.ucl.info.inginious_submit">
+    <extensions defaultExtensionNs="be.ac.ucl.info.inginous_submit">
         <INGIniousSubmitLangExtractor implementation="be.ac.ucl.info.inginious_submit.extractors.JavaCodeExtractor" />
     </extensions>
 </idea-plugin>
