@@ -3,15 +3,13 @@ package be.ac.ucl.info.inginious_submit.extractors;
 import be.ac.ucl.info.inginious_submit.INGIniousIcons;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
-import com.intellij.psi.JavaPsiFacade;
-import com.intellij.psi.PsiClass;
-import com.intellij.psi.PsiMethod;
-import com.intellij.psi.search.GlobalSearchScope;
+import com.intellij.psi.*;
+import com.jetbrains.python.psi.*;
 
-public class JavaCodeExtractor implements LanguageCodeExtractor {
+public class PythonCodeExtractor implements LanguageCodeExtractor {
     @Override
     public String getLanguageId() {
-        return "java";
+        return "python";
     }
 
     public String getContent(Project project, String[] args) {
@@ -32,32 +30,50 @@ public class JavaCodeExtractor implements LanguageCodeExtractor {
     }
 
     public String getClassContent(Project project, String qualifiedName, boolean withSignature) {
-        PsiClass cls = JavaPsiFacade.getInstance(project).findClass(qualifiedName, GlobalSearchScope.projectScope(project));
+        PsiElement anyElement = PsiManager.getInstance(project).findFile(project.getProjectFile());
+        PsiElement cls = PyPsiFacade.getInstance(project).createClassByQName(qualifiedName, anyElement);
+
         if(cls == null) {
             Messages.showMessageDialog(project, "Error", "Class " + qualifiedName + " not found.", INGIniousIcons.ERROR);
             return null;
         }
+
         if(withSignature)
             return cls.getText();
-        else
-            return cls.getText().substring(cls.getLBrace().getStartOffsetInParent() + cls.getLBrace().getTextLength(), cls.getRBrace().getStartOffsetInParent()).trim();
+        else {
+            PsiElement[] children = cls.getChildren();
+
+            if(children.length == 0) {
+                return "";
+            }
+            else {
+                System.out.println("hello");
+                int firstIdx = children[0].getStartOffsetInParent();
+                if(children[0] instanceof PyArgumentList)
+                    firstIdx += children[0].getTextLength();
+                return cls.getText().substring(firstIdx).trim();
+            }
+        }
     }
 
     public String getMethodContent(Project project, String qualifiedClassName, String functionName, boolean withSignature) {
-        PsiClass cls = JavaPsiFacade.getInstance(project).findClass(qualifiedClassName, GlobalSearchScope.projectScope(project));
+        PsiElement anyElement = PsiManager.getInstance(project).findFile(project.getProjectFile());
+        PyClass cls = PyPsiFacade.getInstance(project).createClassByQName(qualifiedClassName, anyElement);
+
         if(cls == null) {
             Messages.showMessageDialog(project, "Error", "Class " + qualifiedClassName + " not found.", INGIniousIcons.ERROR);
             return null;
         }
 
-        PsiMethod found = null;
-        for(PsiMethod method: cls.getMethods()) {
-            if(method.getName().equals(functionName)) {
+        PyFunction[] functions = cls.getMethods();
+        PyFunction found = null;
+        for(PyFunction f: functions) {
+            if(f.getName().equals(functionName)) {
                 if(found != null) {
                     Messages.showMessageDialog(project, "Error", "Multiple methods in class " + qualifiedClassName + " have name " + functionName, INGIniousIcons.ERROR);
                     return null;
                 }
-                found = method;
+                found = f;
             }
         }
 
@@ -67,11 +83,20 @@ public class JavaCodeExtractor implements LanguageCodeExtractor {
         }
 
         if(withSignature)
-            return found.getText();
-        else
-            return found.getBody().getText().substring(
-                    found.getBody().getLBrace().getStartOffsetInParent() + found.getBody().getLBrace().getTextLength(),
-                    found.getBody().getRBrace().getStartOffsetInParent()
-            ).trim();
+            return cls.getText();
+        else {
+            PsiElement[] children = found.getChildren();
+
+            if(children.length == 0) {
+                return "";
+            }
+            else {
+                System.out.println("hello");
+                int firstIdx = children[0].getStartOffsetInParent();
+                if(children[0] instanceof PyParameterList)
+                    firstIdx += children[0].getTextLength();
+                return found.getText().substring(firstIdx).trim();
+            }
+        }
     }
 }

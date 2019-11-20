@@ -150,9 +150,11 @@ public class SubmitAction extends AnAction {
             return;
         }
 
+        CodeExtractor extractor = new CodeExtractor(project);
+
         Map<String, String> submissionContent;
         try {
-            submissionContent = config.entries.stream().collect(Collectors.toMap((c) -> c.subproblemId, (c) -> CodeExtractor.getContent(project, c.language, c.extractArgs)));
+            submissionContent = config.entries.stream().collect(Collectors.toMap((c) -> c.subproblemId, (c) -> extractor.getContent(project, c.language, c.extractArgs)));
         } catch (Exception e) {
             Messages.showMessageDialog(project, e.getMessage(), "Code Unreadable", INGIniousIcons.ERROR);
             return;
@@ -161,13 +163,11 @@ public class SubmitAction extends AnAction {
         ProgressManager.getInstance().run(new Task.Backgroundable(project, "Sending to INGInious") {
             @Override
             public void run(@NotNull ProgressIndicator progressIndicator) {
-                progressIndicator.setIndeterminate(false);
-                progressIndicator.setFraction(0);
+                progressIndicator.setIndeterminate(true);
 
                 LoginPassword lp = askForLogin(config.inginiousURL);
                 if(lp == null)
                     return;
-                progressIndicator.setFraction(0.2);
 
                 String submissionid = submit(project, config.inginiousURL, config.courseId, config.taskId, lp, submissionContent);
                 if(submissionid == null)
@@ -197,9 +197,9 @@ public class SubmitAction extends AnAction {
             lastProject = project;
         }
         else {
-            activate = anActionEvent.getPresentation().isEnabled();
+            activate = anActionEvent.getPresentation().isVisible();
         }
 
-        anActionEvent.getPresentation().setEnabledAndVisible(activate);
+        anActionEvent.getPresentation().setVisible(activate);
     }
 }

@@ -1,25 +1,27 @@
 package be.ac.ucl.info.inginious_submit;
 
-import be.ac.ucl.info.inginious_submit.extractors.JavaCodeExtractor;
 import be.ac.ucl.info.inginious_submit.extractors.LanguageCodeExtractor;
 import com.google.common.collect.ImmutableMap;
+import com.intellij.openapi.extensions.ExtensionPointName;
 import com.intellij.openapi.project.Project;
 
+import java.util.List;
 import java.util.Map;
 
 public class CodeExtractor {
-    private static final Map<String, LanguageCodeExtractor> map;
-    static {
+    private final Map<String, LanguageCodeExtractor> map;
+
+    public CodeExtractor(Project project) {
+        ExtensionPointName<LanguageCodeExtractor> extractorsPoint = com.intellij.openapi.extensions.ExtensionPointName.create("be.ac.ucl.info.inginious_submit.INGIniousSubmitLangExtractor");
+        List<LanguageCodeExtractor> extractors = extractorsPoint.getExtensionList();
+
         ImmutableMap.Builder<String, LanguageCodeExtractor> builder = ImmutableMap.builder();
-
-        builder.put("java", new JavaCodeExtractor());
-
+        for(LanguageCodeExtractor lce: extractors)
+            builder.put(lce.getLanguageId(), lce);
         map = builder.build();
     }
 
-
-
-    public static String getContent(Project project, String language, String[] args) {
+    public String getContent(Project project, String language, String[] args) {
         return map.get(language).getContent(project, args);
     }
 }

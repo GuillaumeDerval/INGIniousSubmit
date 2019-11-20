@@ -1,5 +1,5 @@
 <idea-plugin>
-    <id>be.ac.ucl.info.inginous_submit</id>
+    <id>be.ac.ucl.info.inginious_submit</id>
     <name>Submit to INGInious</name>
     <vendor email="guillaume.derval@uclouvain.be" url="http://www.inginious.org">Guillaume Derval</vendor>
 
@@ -16,7 +16,13 @@
 
     <depends>com.intellij.modules.platform</depends>
     <depends>com.intellij.modules.lang</depends>
-    <depends>com.intellij.modules.java</depends>
+    <depends optional="true" config-file="java.xml">com.intellij.modules.java</depends>
+    <depends optional="true" config-file="python.xml">com.intellij.modules.python</depends>
+
+    <extensionPoints>
+        <extensionPoint interface="be.ac.ucl.info.inginious_submit.extractors.LanguageCodeExtractor"
+                        name="INGIniousSubmitLangExtractor"/>
+    </extensionPoints>
 
     <extensions defaultExtensionNs="com.intellij">
         <fileType name="INGInious submit plugin config file" implementationClass="be.ac.ucl.info.inginious_submit.INGIniousConfigFileType" fieldName="INSTANCE" fileNames="config.inginious"/>
