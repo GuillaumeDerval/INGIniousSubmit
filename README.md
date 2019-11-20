@@ -3,7 +3,8 @@ Submit to INGInious
 
 A plugin for Jetbrains' IDEs to submit programming exercises to [INGInious](https://github.com/UCL-INGI/INGInious).
 
-Currently, it only supports Java (IntelliJ).
+Currently, it only supports Java/Python. It can be installed on any Jetbrains IDE that supports at least one of these
+languages (even via plugins).
 
 Configuration file
 ------------------
