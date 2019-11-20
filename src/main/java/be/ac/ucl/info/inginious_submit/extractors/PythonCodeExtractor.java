@@ -6,6 +6,8 @@ import com.intellij.openapi.ui.Messages;
 import com.intellij.psi.*;
 import com.jetbrains.python.psi.*;
 
+import static be.ac.ucl.info.inginious_submit.PaddingHelper.getWhiteSpaceBefore;
+
 public class PythonCodeExtractor implements LanguageCodeExtractor {
     @Override
     public String getLanguageId() {
@@ -39,7 +41,7 @@ public class PythonCodeExtractor implements LanguageCodeExtractor {
         }
 
         if(withSignature)
-            return cls.getText();
+            return getWhiteSpaceBefore(cls) + cls.getText();
         else {
             PsiElement[] children = cls.getChildren();
 
@@ -47,11 +49,16 @@ public class PythonCodeExtractor implements LanguageCodeExtractor {
                 return "";
             }
             else {
-                System.out.println("hello");
-                int firstIdx = children[0].getStartOffsetInParent();
-                if(children[0] instanceof PyArgumentList)
-                    firstIdx += children[0].getTextLength();
-                return cls.getText().substring(firstIdx).trim();
+                PsiElement first = children[0];
+                if(children[0] instanceof PyArgumentList) {
+                    if(children.length == 1)
+                        return "";
+                    first = children[1];
+                }
+
+                while (first.getPrevSibling() instanceof PsiWhiteSpace)
+                    first = first.getPrevSibling();
+                return cls.getText().substring(first.getStartOffsetInParent());
             }
         }
     }
@@ -83,7 +90,7 @@ public class PythonCodeExtractor implements LanguageCodeExtractor {
         }
 
         if(withSignature)
-            return cls.getText();
+            return getWhiteSpaceBefore(found) + found.getText();
         else {
             PsiElement[] children = found.getChildren();
 
@@ -91,11 +98,16 @@ public class PythonCodeExtractor implements LanguageCodeExtractor {
                 return "";
             }
             else {
-                System.out.println("hello");
-                int firstIdx = children[0].getStartOffsetInParent();
-                if(children[0] instanceof PyParameterList)
-                    firstIdx += children[0].getTextLength();
-                return found.getText().substring(firstIdx).trim();
+                PsiElement first = children[0];
+                if(children[0] instanceof PyParameterList) {
+                    if(children.length == 1)
+                        return "";
+                    first = children[1];
+                }
+
+                while (first.getPrevSibling() instanceof PsiWhiteSpace)
+                    first = first.getPrevSibling();
+                return found.getText().substring(first.getStartOffsetInParent());
             }
         }
     }

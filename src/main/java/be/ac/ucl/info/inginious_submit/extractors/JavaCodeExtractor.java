@@ -8,6 +8,8 @@ import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiMethod;
 import com.intellij.psi.search.GlobalSearchScope;
 
+import static be.ac.ucl.info.inginious_submit.PaddingHelper.getWhiteSpaceBefore;
+
 public class JavaCodeExtractor implements LanguageCodeExtractor {
     @Override
     public String getLanguageId() {
@@ -38,9 +40,9 @@ public class JavaCodeExtractor implements LanguageCodeExtractor {
             return null;
         }
         if(withSignature)
-            return cls.getText();
+            return getWhiteSpaceBefore(cls) + cls.getText();
         else
-            return cls.getText().substring(cls.getLBrace().getStartOffsetInParent() + cls.getLBrace().getTextLength(), cls.getRBrace().getStartOffsetInParent()).trim();
+            return cls.getText().substring(cls.getLBrace().getStartOffsetInParent() + cls.getLBrace().getTextLength(), cls.getRBrace().getStartOffsetInParent());
     }
 
     public String getMethodContent(Project project, String qualifiedClassName, String functionName, boolean withSignature) {
@@ -67,11 +69,11 @@ public class JavaCodeExtractor implements LanguageCodeExtractor {
         }
 
         if(withSignature)
-            return found.getText();
+            return getWhiteSpaceBefore(found) + found.getText();
         else
             return found.getBody().getText().substring(
                     found.getBody().getLBrace().getStartOffsetInParent() + found.getBody().getLBrace().getTextLength(),
                     found.getBody().getRBrace().getStartOffsetInParent()
-            ).trim();
+            );
     }
 }

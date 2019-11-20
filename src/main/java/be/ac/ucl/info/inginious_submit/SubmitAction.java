@@ -150,7 +150,7 @@ public class SubmitAction extends AnAction {
             return;
         }
 
-        CodeExtractor extractor = new CodeExtractor(project);
+        CodeExtractor extractor = new CodeExtractor();
 
         Map<String, String> submissionContent;
         try {

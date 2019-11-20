@@ -11,7 +11,7 @@ import java.util.Map;
 public class CodeExtractor {
     private final Map<String, LanguageCodeExtractor> map;
 
-    public CodeExtractor(Project project) {
+    public CodeExtractor() {
         ExtensionPointName<LanguageCodeExtractor> extractorsPoint = com.intellij.openapi.extensions.ExtensionPointName.create("be.ac.ucl.info.inginious_submit.INGIniousSubmitLangExtractor");
         List<LanguageCodeExtractor> extractors = extractorsPoint.getExtensionList();
 
@@ -22,6 +22,6 @@ public class CodeExtractor {
     }
 
     public String getContent(Project project, String language, String[] args) {
-        return map.get(language).getContent(project, args);
+        return PaddingHelper.trim(map.get(language).getContent(project, args));
     }
 }
