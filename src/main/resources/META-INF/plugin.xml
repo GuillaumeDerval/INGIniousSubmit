@@ -3,7 +3,7 @@
     <name>Submit to INGInious</name>
     <vendor email="guillaume.derval@uclouvain.be" url="http://www.inginious.org">Guillaume Derval</vendor>
 
-    <version>1.0.1</version>
+    <version>1.0.2</version>
     <change-notes>Fix vendor string. Fix plugin version displayed on the Plugin Repository.</change-notes>
 
     <description><![CDATA[
@@ -23,6 +23,10 @@
         <extensionPoint interface="be.ac.ucl.info.inginious_submit.extractors.LanguageCodeExtractor"
                         name="INGIniousSubmitLangExtractor"/>
     </extensionPoints>
+
+    <extensions defaultExtensionNs="be.ac.ucl.info.inginious_submit">
+        <INGIniousSubmitLangExtractor implementation="be.ac.ucl.info.inginious_submit.extractors.FileExtractor"/>
+    </extensions>
 
     <extensions defaultExtensionNs="com.intellij">
         <fileType name="INGInious submit plugin config file" implementationClass="be.ac.ucl.info.inginious_submit.INGIniousConfigFileType" fieldName="INSTANCE" fileNames="config.inginious"/>

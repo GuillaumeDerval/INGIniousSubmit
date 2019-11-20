@@ -48,6 +48,7 @@ Below are documented all the actions available inside the config file
 
 `SPID` always means Subproblem ID. Things in lower case are keywords. 
 Unless noted otherwise, `LANG` is always either `java` or `python`. 
+These languages are only available if the right plugin is loaded inside your IDE.
 
 - `SPID LANG method EXTRACT_SIGNATURE CLASS_NAME METHOD_NAME` extracts the method `METHOD_NAME` from the class `CLASS_NAME`,
   and send it to INGInious as the answer for subproblem `SPID`. 
@@ -57,6 +58,8 @@ Unless noted otherwise, `LANG` is always either `java` or `python`.
   and send it to INGInious as the answer for subproblem `SPID`. 
   `EXTRACT_SIGNATURE` can be either `true` or `false` and indicates if the signature of the class 
   must be sent to INGInious or not.
+- `SPID file RELATIVE_FILE_PATH` loads the **text** file located at `RELATIVE_FILE_PATH`, relative to the root of
+  the project, and send it to INGInious as the answer for subproblem `SPID`.
   
 Note that Python requires Fully Qualified Names for classes (for example, a class `C` inside a file 
 `test.py` inside the package `this.is.a.package` has `this.is.a.package.test.C` as FQN).
@@ -67,6 +70,5 @@ TODO
 - Add new code extractors for C/C++/Scala, which are used by UCLouvain for multiple courses.
 - Add a code extractor that sends JAR file
 - Add a code extractor that sends a ZIP file of the whole project
-- Add a code extractor that allows to send specific files
 - Modify the submission mechanism to allow to send binary files
 - Add a command that ensures that tests have been run and are successful before sending a submission to INGInious
