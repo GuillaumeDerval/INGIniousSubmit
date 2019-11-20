@@ -45,22 +45,25 @@ Actions
 Below are documented all the actions available inside the config file 
 (i.e. all the things you can put below the first three lines of the configuration).
 
-`SPID` always means Subproblem ID. Things in lower case are keywords.
+`SPID` always means Subproblem ID. Things in lower case are keywords. 
+Unless noted otherwise, `LANG` is always either `java` or `python`. 
 
-- `SPID java method EXTRACT_SIGNATURE CLASS_NAME METHOD_NAME` extracts the method `METHOD_NAME` from the class `CLASS_NAME`,
+- `SPID LANG method EXTRACT_SIGNATURE CLASS_NAME METHOD_NAME` extracts the method `METHOD_NAME` from the class `CLASS_NAME`,
   and send it to INGInious as the answer for subproblem `SPID`. 
   `EXTRACT_SIGNATURE` can be either `true` or `false` and indicates if the signature of the method 
   must be sent to INGInious or not.
-- `SPID java class EXTRACT_SIGNATURE CLASS_NAME` extracts the class `CLASS_NAME`,
+- `SPID LANG class EXTRACT_SIGNATURE CLASS_NAME` extracts the class `CLASS_NAME`,
   and send it to INGInious as the answer for subproblem `SPID`. 
   `EXTRACT_SIGNATURE` can be either `true` or `false` and indicates if the signature of the class 
   must be sent to INGInious or not.
   
+Note that Python requires Fully Qualified Names for classes (for example, a class `C` inside a file 
+`test.py` inside the package `this.is.a.package` has `this.is.a.package.test.C` as FQN).
+
 TODO
 ----
 
-- Add new code extractors for C/C++/Python/Scala, which are used by UCLouvain for multiple courses.
-- Find a way to make the plugin independent of the IDE and load these code extractors only when they are available.
+- Add new code extractors for C/C++/Scala, which are used by UCLouvain for multiple courses.
 - Add a code extractor that sends JAR file
 - Add a code extractor that sends a ZIP file of the whole project
 - Add a code extractor that allows to send specific files
