@@ -24,7 +24,7 @@ public class LoginDialogWrapper extends DialogWrapper {
         JPanel dialogPanel = new JPanel();
         dialogPanel.setLayout(new BoxLayout(dialogPanel, BoxLayout.PAGE_AXIS));
 
-        JLabel label = new JLabel("<html>Please enter your INGInious account login informations. <br>" +
+        JLabel label = new JLabel("<html>Please enter your INGInious account login information. <br>" +
                 "Note that it is the INGInious password, not the password given by your university or workplace.<br>" +
                 "Your password will be saved until your restart your IDE. <br>" +
                 "<br>" +
